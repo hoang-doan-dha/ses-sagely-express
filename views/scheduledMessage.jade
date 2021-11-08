@@ -5,6 +5,8 @@ block content
   h2 Response: 
     if response.stdout
       span(style='color: #44eb68') Run successfully!
+      br
+      pre #{response.stdout}
     if response.stderr 
       span(style='color: red') Something went wrong!
       br

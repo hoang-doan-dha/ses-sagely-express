@@ -5,7 +5,8 @@ const emlformat = require('eml-format');
 
 const router = express.Router();
 
-const rootPath = path.resolve('./');
+// config here
+const rootPath = path.resolve('../ses-mock');
 
 const folderPath = path.join(rootPath, 'output');
 

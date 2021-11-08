@@ -6,7 +6,8 @@ const router = express.Router();
 
 async function runScheduledMessage() {
   try {
-    const response = await exec('cd ../sagely-microservices/ && sh script1.sh');
+    // CONFIG PATH HERE
+    const response = await exec('cd ../sagely-communications/ && grunt run-scheduleMessage');
     console.log('stdout:', response.stdout);
     console.log('stderr:', response.stderr);
     return response;
