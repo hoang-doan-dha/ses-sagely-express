@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Command line just ran: grunt run-scheduleMessage 
+  h2 Response: 
+    if response.stdout
+      span(style='color: #44eb68') Run successfully!
+    if response.stderr 
+      span(style='color: red') Something went wrong!
+      br
+      pre #{response.stderr}

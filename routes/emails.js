@@ -6,10 +6,8 @@ const emlformat = require('eml-format');
 const router = express.Router();
 
 const rootPath = path.resolve('./');
-console.log('rootPath', rootPath);
 
 const folderPath = path.join(rootPath, 'output');
-console.log("🚀 ~ file: emails.js ~ line 10 ~ folderPath", folderPath)
 
 /* GET emails listing. */
 router.get('/', function(req, res, next) {
@@ -23,7 +21,6 @@ router.get('/', function(req, res, next) {
       }
       return ret;
     });
-    console.log("🚀 ~ file: emails.js ~ line 25 ~ router.get ~ fileObjects", fileObjects)
     res.render('emails', { files: fileObjects });
   } catch (error) {
     console.log(error);
@@ -36,20 +33,39 @@ router.get('/:folderName', function(req, res, next) {
   try {
     const folderName = req.params.folderName;
     const emailPath = path.join(folderPath, folderName, 'content.eml');
-    console.log("🚀 ~ file: emails.js ~ line 31 ~ router.get ~ emailPath", emailPath)
     const eml = fs.readFileSync(emailPath, 'utf-8');
     emlformat.read(eml, (err, data) => {
       if (err) {
         res.status(500).send(err);
       };
       // console.log(data); //List of files
-      console.log("Done!");
       res.send(data.html);
     });
   } catch (error) {
     console.log(error);
     res.status(500).send('Error in reading a specified email');
   }
+});
+
+/* DELETE an email */
+router.delete('/:folderName', function(req, res, next) {
+  const folderName = req.params.folderName;
+  const emailPath = path.join(folderPath, folderName);
+  fs.stat(emailPath, function (err, stats) { 
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error in reading a specific email');
+      return;
+    }
+    fs.rmdir(emailPath, { recursive: true }, function(err){
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error in deleting a specific email');
+        return;
+      };
+      res.send('Delete the email successfully');
+    });  
+  });
 });
 
 module.exports = router;
