@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 List of emails
+  ul
+    each file in files
+      li(style='padding: 10px; font-size: 18px;')
+        a(href='/emails/' + file.filename, target="_blank", rel="noopener noreferrer")
+          div= file.filename
+          if file.stat
+            div= file.stat.birthtime
