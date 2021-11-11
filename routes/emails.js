@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     res.render('emails', { files: fileObjects });
   } catch (error) {
     console.log(error);
-    res.status(500).send('Error in reading all files of emails');
+    res.status(500).render('error', { error, message: 'Failed in reading all files of emails' });
   }
 });
 

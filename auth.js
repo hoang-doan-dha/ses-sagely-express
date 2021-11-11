@@ -13,6 +13,10 @@ const setAuth = (token) => {
   axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 };
 
+const removeToken = () => {
+  axios.defaults.headers.common["Authorization"] = null;
+}
+
 const validate = async () => {
   return await axios.post(API_URL + "validate/validate", {
     refreshUser: false,
@@ -20,6 +24,9 @@ const validate = async () => {
   });
 };
 
-exports.authenticate = authenticate;
-exports.setAuth = setAuth;
-exports.validate = validate;
+module.exports = {
+  authenticate,
+  setAuth,
+  validate,
+  removeToken
+}
