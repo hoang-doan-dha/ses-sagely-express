@@ -1,12 +1,8 @@
+extends layout
+
 block header
-  div(class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-center items-center")
-    div 
-      a(href='/', class="text-base font-medium text-white") 
-      | Sagely Home
-    div
-      a(href="/logout" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700")
-      | Sign out
-      
+  include header.jade
+
 block content
   h1= title
   p Welcome to #{title}
