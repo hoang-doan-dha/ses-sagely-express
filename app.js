@@ -18,6 +18,7 @@ var indexRouter = require('./routes/index');
 var viewsRouter = require('./routes/views');
 const emailsRouter = require('./routes/emails');
 const scheduledMessageRouter = require('./routes/scheduledMessage');
+const communicationsRouter = require('./routes/communications');
 const { loginErrorHandler } = require('./handlers/loginErrorHandler');
 
 var app = express();
@@ -53,6 +54,7 @@ app.use('/', indexRouter);
 app.use('/views', viewsRouter);
 app.use('/emails', emailsRouter);
 app.use('/scheduledMessage', scheduledMessageRouter);
+app.use('/communications', communicationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

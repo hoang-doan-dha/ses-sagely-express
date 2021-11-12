@@ -7,8 +7,10 @@ const API_URL = "http://54.255.38.53:7111/";
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
+  // res.render("index", { title: "SES-Mock Sagely GUI", displayName: 'Sagely Support' });
+
   if (req.cookies.isLoggedIn) {
-    res.render("index", { title: "SES-Mock Sagely GUI" });
+    res.render("index", { displayName: req.cookies.displayName || 'Sagely Support' });
   } else {
     res.redirect('login');
   }
@@ -40,7 +42,6 @@ router.post("/login",
   // } catch (error) {
   //   res.render('login', { error: 'Wrong username or password' })
   // }
-    console.log('Done login');
     if (res.locals.isLoggedIn) {
       // The maxAge option is a convenience option for setting “expires” relative to the current time in milliseconds.
       res.cookie('isLoggedIn', 1, { maxAge: 60000, httpOnly: true });
@@ -55,13 +56,12 @@ router.get('/logout', function (req, res) {
   auth.removeToken();
   const { cookies } = req;
   for (let prop in cookies) {
-    console.log('prop cookie', prop);
     if (!cookies.hasOwnProperty(prop)) {
-        continue;
+      continue;
     }    
-    res.clearCookie(prop)
+    res.clearCookie(prop);
   }
-  res.redirect('login')
+  res.redirect('login');
 });
 
 module.exports = router;

@@ -1,8 +1,28 @@
 block header 
-  div(class="border-b-2 h-12 flex justify-between items-center")
-    div 
-      a(href='/', class="text-base font-medium") 
-        | Sagely Home
-    div
-      a(href="/logout" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700")
-        | Sign out
+  section
+    nav(class="flex justify-between text-white w-full p-4 bg-indigo-600")
+      div(class="flex items-center")
+        a(href='/', class="text-2xl font-bold font-heading") 
+          | Sagely Home
+      div(class="flex min-h-full items-center")
+        ul(class="hidden md:flex px-4 mx-auto font-bold font-heading text-xl space-x-12")
+          li
+            a(href='/', class="hover:text-gray-200") SES Mock
+          li
+            a(href='/communications', class="hover:text-gray-200") Communications CLI
+      div(x-data="{ dropdownOpen: false }" class="relative flex")
+        div(class="xl:flex min-h-full items-center")
+          button(@click='dropdownOpen = !dropdownOpen', class="flex h-full items-center justify-center space-x-2")
+            svg(xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+            span(class="text-xl") #{displayName}
+        div(x-show="dropdownOpen", class="absolute top-8 right-0 p-2 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-20")
+          div(x-data="{ loading: false }")
+            button(@click='loading = true', class="w-full")
+              a(href='/logout', class="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200")
+                | Sign out
+            div(x-show="loading")
+              include spinner.jade
+            //- div(x-show="loading", class="w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50")
+            //-   span(class="opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0", style="top: 50%; color: #8bc34a;")
+            //-     i(class="fas fa-circle-notch fa-spin fa-5x")
