@@ -6,10 +6,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// ----
+// MIDDLE WARE
+// ----
+const authMiddlewares = require('./middlewares/auth');
+
 // pass the express to the connect redis module
 // allowing it to inherit from session.Store
-const RedisStore = require('connect-redis')(session);
-const redisClient = redis.createClient()
+// const RedisStore = require('connect-redis')(session);
+// const redisClient = redis.createClient()
 
 // ---
 // Router Controller
@@ -28,7 +33,7 @@ app.use(session({
   resave: false, // don't save session if unmodified
   saveUninitialized: false, // don't create session until something stored
   secret: 'something is secret',
-  store: new RedisStore({ client: redisClient })
+  // store: new RedisStore({ client: redisClient })
 }));
 
 // view engine setup
@@ -52,9 +57,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ---
 app.use('/', indexRouter);
 app.use('/views', viewsRouter);
-app.use('/emails', emailsRouter);
-app.use('/scheduledMessage', scheduledMessageRouter);
-app.use('/communications', communicationsRouter);
+app.use('/emails', authMiddlewares.validate, emailsRouter);
+app.use('/scheduledMessage', authMiddlewares.validate, scheduledMessageRouter);
+app.use('/communications', authMiddlewares.validate, communicationsRouter);
+
+// <------------------------------ Error Handlers ------------------------->
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

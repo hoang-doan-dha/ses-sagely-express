@@ -1,12 +1,16 @@
 extends layout
 
+block header
+  include header.jade
+
 block content
-  h1 List of emails
-  ul
-    each file in files
-      li(style='padding: 10px; margin: 5px; font-size: 18px; background-color: #f0f0f0; display: flex; justify-content: space-between;')
-        a(href='/emails/' + file.filename, target="_blank", rel="noopener noreferrer")
-          div Email UUID: #{file.filename}
-          if file.stat
-            div Created Date: #{file.stat.ctime}
-        button(class='delete-email-btn' id=file.filename style='background-color: #ee5c5c; color: #ffffff;' onclick='handleDelete(this)') DELETE
+  div(class="bg-gray-300 min-h-full w-full p-4")
+    h1(class="font-semibold") THE LIST OF EMAILS
+    ul(class="flex flex-col space-y-2 md:p-2 p-8")
+      each file in files
+        li(class='py-4 px-8 mx-4 lg:mx-32 bg-white shadow-lg rounded-lg flex justify-between')
+          a(href='/emails/' + file.filename, target="_blank", rel="noopener noreferrer")
+            div Email UUID: #{file.filename}
+            if file.stat
+              div Created Date: #{file.stat.ctime}
+          button(class='rounded-lg bg-red-400 hover:bg-red-700 px-4' id=file.filename style='color: #ffffff;' onclick='handleDelete(this)') DELETE

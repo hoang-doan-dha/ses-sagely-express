@@ -5,13 +5,17 @@ block header
 
 block content
   div(class="bg-gray-300 min-h-full w-full p-4 md:p-8 lg:p-16")
-    h1(class="font-extrabold text-indigo-600") INPUT 
-    form(action="/communications", method="post", class="my-4 space-y-6")
+    h1(class="font-extrabold text-indigo-600") INPUT *
+    form(x-data="{ loading: false }", action="/communications", method="post", class="my-4 space-y-6")
       div
         label(for="command" class="hidden block text-sm font-medium text-gray-700 mb-2") Command 
-        input(name="command", id="command" type="text" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter a command line")
-      div
-        input(type="button", value="RUN", class="hidden", @keyup.enter.prevent="$el.dispatchEvent('submit')")
+        input(@keyup.enter="loading = true", name="command", id="command" type="text" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter a command line")
+        div(x-show='loading')
+          include spinner.jade
+      div(class="text-sm italic")
+        | (*) It takes at least 1 minute to run a command. Please be patient.
+      //- div
+      //-   input(type="submit", value="RUN", class="hidden", @keyup.enter.prevent="$el.dispatchEvent('submit'); loading = true")
     h1(class="font-extrabold text-indigo-600") OUTPUT
     if command
       div(class="bg-gray-100 rounded relative block w-full px-3 py-2 my-4 min-h-32")

@@ -44,10 +44,10 @@ router.post("/login",
   // }
     if (res.locals.isLoggedIn) {
       // The maxAge option is a convenience option for setting “expires” relative to the current time in milliseconds.
-      res.cookie('isLoggedIn', 1, { maxAge: 60000, httpOnly: true });
+      res.cookie('isLoggedIn', 1, { maxAge: 10 * 60 * 100, httpOnly: true });
     }
-    res.cookie('displayName', res.locals.displayName, { maxAge: 60000, httpOnly: true });
-    res.cookie('token', res.locals.token, { maxAge: 60000, httpOnly: true });
+    res.cookie('displayName', res.locals.displayName, { maxAge: 10 * 60 * 100, httpOnly: true });
+    // res.cookie('token', res.locals.token, { maxAge: 60000, httpOnly: true });
     res.redirect("/");
   }
 );

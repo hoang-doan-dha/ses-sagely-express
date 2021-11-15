@@ -1,5 +1,16 @@
 const auth = require('../auth');
 
+function removeAll (req, res) {
+  auth.removeToken();
+  const { cookies } = req;
+  for (let prop in cookies) {
+    if (!cookies.hasOwnProperty(prop)) {
+      continue;
+    }    
+    res.clearCookie(prop);
+  }
+}
+
 async function authenticate (req, res, next) {
   const { username, password } = req.body;
   try {
@@ -10,6 +21,9 @@ async function authenticate (req, res, next) {
 
       // Solution 2. Saving in local variables, it's only existed during that request/response cycle
       res.locals.token = data.data.token;
+
+      res.cookie('token', res.locals.token, { maxAge: 10 * 60 * 100, httpOnly: true });
+
       next();
     } else {
       next(new Error('Not find token.'));
@@ -22,10 +36,11 @@ async function authenticate (req, res, next) {
 
 async function validate (req, res, next) {
   const { token } = res.locals;
-  if (token) {
-    auth.setAuth(token);
+  if (req.cookies.token || token) {
+    const authToken = req.cookies.token || token;
+    auth.setAuth(authToken);
     try {
-      const data = await auth.validate(token);
+      const data = await auth.validate(authToken);
       
       if (data.data && data.data.payload) {
         res.locals.displayName = data.data.payload.displayName;
@@ -36,12 +51,14 @@ async function validate (req, res, next) {
       next();
     } catch (error) {
       console.log(error);
+      removeAll(req, res);
       next(new Error('Failed in validation.'));
     }
   } else {
     next(new Error('Not find token.'));
   }
 }
+
 
 module.exports = {
   authenticate,
