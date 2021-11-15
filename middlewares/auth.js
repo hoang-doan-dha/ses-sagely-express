@@ -22,7 +22,7 @@ async function authenticate (req, res, next) {
       // Solution 2. Saving in local variables, it's only existed during that request/response cycle
       res.locals.token = data.data.token;
 
-      res.cookie('token', res.locals.token, { maxAge: 10 * 60 * 100, httpOnly: true });
+      // res.cookie('token', data.data.token, { maxAge: 10 * 60 * 100, httpOnly: true });
 
       next();
     } else {

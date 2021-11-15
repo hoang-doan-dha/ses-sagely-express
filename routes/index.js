@@ -47,7 +47,7 @@ router.post("/login",
       res.cookie('isLoggedIn', 1, { maxAge: 10 * 60 * 100, httpOnly: true });
     }
     res.cookie('displayName', res.locals.displayName, { maxAge: 10 * 60 * 100, httpOnly: true });
-    // res.cookie('token', res.locals.token, { maxAge: 60000, httpOnly: true });
+    res.cookie('token', res.locals.token, { maxAge: 60000, httpOnly: true });
     res.redirect("/");
   }
 );
